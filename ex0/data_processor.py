@@ -112,7 +112,36 @@ if __name__ == "__main__":
     print("Processing data: [1, 2, 3, 4, 5]")
     numeric.ingest([1, 2, 3, 4, 5])
     print("Extracting 3 values...")
-    for _ in range(3):
+    for i in range(3):
         rank, value = numeric.output()
         print(f"Numeric value {rank}: {value}")
+
     print("")
+    print("Testing Text Processor...")
+    text = TextProcessor()
+    print(f"Trying to validate input '42': {text.validate(42)}")
+
+    print("Processing data: ['Hello', 'Nexus', 'World']")
+    text.ingest(['Hello', 'Nexus', 'World'])
+    print("Extracting 1 value...")
+    for i in range(1):
+            rank, value = text.output()
+            print(f"Text value {rank}: {value}")
+
+    print("")
+    print("Testing Log Processor...")
+    log = LogProcessor()
+    print(f"Trying to validate input 'Hello': {log.validate('Hello')}")
+
+    print("Processing data: [{'log_level': 'NOTICE', 'log_message': "
+      "'Connection to server'}, {'log_level': 'ERROR', 'log_message': "
+      "'Unauthorized access!!'}]")
+    
+    log.ingest([
+    {'log_level': 'NOTICE', 'log_message': 'Connection to server'},
+    {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'},
+    ])
+    print("Extracting 2 values...")
+    for i in range(2):
+            rank, value = log.output()
+            print(f"Log entry {rank}: {value}")
