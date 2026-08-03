@@ -183,3 +183,13 @@ if __name__ == "__main__":
     stream.process_stream(batch)
     stream.print_processors_stats()
     print("")
+
+    print("Consume some elements from the data processors: "
+          "Numeric 3, Text 2, Log 1")
+    for i in range(3):
+        numeric.output()
+    for i in range(2):
+        text.output()
+    for i in range(1):
+        log.output()
+    stream.print_processors_stats()
