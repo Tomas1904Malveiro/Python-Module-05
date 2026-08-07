@@ -45,10 +45,26 @@ class DataStream:
         self.processors.append(proc)
 
     def process_stream(self, stream: list[Any]) -> None:
-        ...
+        for element in stream:
+            processed = False
+            for proc in self.processors:
+                if proc.validate(element):
+                    proc.ingest(element)
+                    processed = True
+                    break
+            if not processed:
+                print(f"DataStream error - Can't process element in stream: {element}")
 
     def print_processors_stats(self) -> None:
-        ...
+        print("== DataStream statistics ==")
+        if not self.processors:
+            print("No processor found, no data")
+            return
+        for proc in self.processors:
+            print(
+                f"{proc.name}: total {proc.count} items processed, "
+                f"remaining {len(proc.data_save)} on processor"
+            )
 
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
         for proc in self.processors:
@@ -144,6 +160,7 @@ if __name__ == "__main__":
     print("=== Code Nexus - Data Pipeline ===")
     print("")
     print("Initialize Data Stream...")
+    print("")
 
     stream = DataStream()
     stream.print_processors_stats()
@@ -171,13 +188,40 @@ if __name__ == "__main__":
         ["Hi", "five"],
     ]
 
-    stream.process_stream(batch)
     print(f"Send first batch of data on stream: {batch}")
+    stream.process_stream(batch)
+    print("")
+    stream.print_processors_stats()
 
+    print("")
     print("Send 3 processed data from each processor to a CSV plugin:")
     csv_plugin = CSVExportPlugin()
     stream.output_pipeline(3, csv_plugin)
+    print("")
     stream.print_processors_stats()
 
     json_plugin = JSONExportPlugin()
+
+    print("")
+    batch2 = [
+        21,
+        ["I love AI", "LLMs are wonderful", "Stay healthy"],
+        [
+            {"log_level": "ERROR", "log_message": "500 server crash"},
+            {"log_level": "NOTICE",
+             "log_message": "Certificate expires in 10 days"},
+        ],
+        [32, 42, 64, 84, 128, 168],
+        "World hello",
+    ]
+    print(f"Send another batch of data: {batch2}")
+    stream.process_stream(batch2)
+    print("")
+    stream.print_processors_stats()
+
+    print("")
+    print("Send 5 processed data from each processor to a JSON plugin:")
+    json_plugin = JSONExportPlugin()
     stream.output_pipeline(5, json_plugin)
+    print("")
+    stream.print_processors_stats()
