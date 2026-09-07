@@ -125,8 +125,8 @@ if __name__ == "__main__":
     text.ingest(['Hello', 'Nexus', 'World'])
     print("Extracting 1 value...")
     for i in range(1):
-            rank, value = text.output()
-            print(f"Text value {rank}: {value}")
+        rank, value = text.output()
+        print(f"Text value {rank}: {value}")
 
     print("")
     print("Testing Log Processor...")
@@ -134,14 +134,15 @@ if __name__ == "__main__":
     print(f"Trying to validate input 'Hello': {log.validate('Hello')}")
 
     print("Processing data: [{'log_level': 'NOTICE', 'log_message': "
-      "'Connection to server'}, {'log_level': 'ERROR', 'log_message': "
-      "'Unauthorized access!!'}]")
-    
+          "'Connection to server'}, {'log_level': 'ERROR', 'log_message': "
+          "'Unauthorized access!!'}]")
+
     log.ingest([
-    {'log_level': 'NOTICE', 'log_message': 'Connection to server'},
-    {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'},
+        {'log_level': 'NOTICE', 'log_message': 'Connection to server'},
+        {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'},
     ])
+
     print("Extracting 2 values...")
     for i in range(2):
-            rank, value = log.output()
-            print(f"Log entry {rank}: {value}")
+        rank, value = log.output()
+        print(f"Log entry {rank}: {value}")

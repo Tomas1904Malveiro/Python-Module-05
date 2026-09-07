@@ -35,7 +35,8 @@ class DataStream:
                     processed = True
                     break
             if not processed:
-                print(f"DataStream error - Can't process element in stream: {element}")
+                print(f"DataStream error - Can't process "
+                      f"element in stream: {element}")
 
     def print_processors_stats(self) -> None:
         print("== DataStream statistics ==")
